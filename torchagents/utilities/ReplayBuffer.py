@@ -24,10 +24,9 @@ class ReplayBuffer:
 
     def get_random_batch(self, batch_size: int):
         # rand_idx = torch.randint(self.buffer_size, (batch_size,)) without replacement
-        rand_idx = torch.randperm(self.buffer_size)[:10]
-        for i in range(batch_size):
-            yield self.states[rand_idx[i]], self.actions[rand_idx[i]], \
-                  self.rewards[rand_idx[i]], self.next_states[rand_idx[i]]
+        rand_idx = torch.randperm(batch_size)[:10]
+        return (self.states[rand_idx], self.actions[rand_idx],
+                self.rewards[rand_idx], self.next_states[rand_idx])
 
     def reset(self) -> None:
         self.current_index = 0

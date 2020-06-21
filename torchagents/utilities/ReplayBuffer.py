@@ -22,20 +22,21 @@ class ReplayBuffer:
 
     def update(self, state: torch.Tensor, action: torch.Tensor,
                reward: torch.Tensor, next_state: torch.Tensor) -> None:
-        self._states[self._current_index] = state
-        self._actions[self._current_index] = action
-        self._rewards[self._current_index] = reward
-        self._next_states[self._current_index] = next_state
+        idx = self._current_index % self.buffer_size
+        self._states[idx] = state
+        self._actions[idx] = action
+        self._rewards[idx] = reward
+        self._next_states[idx] = next_state
         self._current_index += 1
-        self._current_index %= self.buffer_size
 
     def get_random_batch(self, batch_size: int) -> (torch.Tensor, torch.Tensor,
                                                     torch.Tensor, torch.Tensor):
         # rand_idx = torch.randint(self.buffer_size, (batch_size,)) without replacement
+        if self._current_index < batch_size:
+            raise ValueError('Batch size greater than number of replays.')
         rand_idx = torch.randperm(batch_size)
         return (self._states[rand_idx], self._actions[rand_idx],
                 self._rewards[rand_idx], self._next_states[rand_idx])
 
-    def reset(self) -> None:
-        # This function has no real use right now
+    def reset(self):
         self._current_index = 0

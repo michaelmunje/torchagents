@@ -58,17 +58,17 @@ class NetworkPolicy(Policy):
             self._optimizer = optim.Adam(params=self._network.parameters(), lr=0.01)
         self._writer = writer
         self._training_iter = 0
+        self._objective = nn.CrossEntropyLoss()
 
     def get_action(self, state: torch.Tensor) -> torch.Tensor:
-        action_probs = self._softmax(self._network(state))
-        return action_probs.data.cpu().numpy()[0]
+        return self._softmax(self._network(state)).data
 
     def train(self, states: torch.Tensor,
               actions: torch.Tensor,
               rewards: torch.Tensor):
         self._optimizer.zero_grad()
         actions_pred = self._network(states)
-        loss_v = nn.CrossEntropyLoss()(actions_pred, actions)
+        loss_v = self._objective(actions_pred, actions)
         loss_v.backward()
         self._optimizer.step()
         if self._writer is not None:

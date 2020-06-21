@@ -1,1 +1,1 @@
-from .CrossEntropyAgent import CrossEntropyAgent
+from .OffPolicyFilteringAgent import OffPolicyFilteringAgent

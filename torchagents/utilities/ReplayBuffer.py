@@ -15,19 +15,19 @@ class ReplayBuffer:
 
     def update(self, state: torch.Tensor, action: torch.Tensor,
                reward: torch.Tensor, next_state: torch.Tensor) -> None:
-        if self.current_index >= self.buffer_size:
-            raise ValueError('Cannot update once replay buffer is full.')
         self.states[self.current_index] = state
         self.actions[self.current_index] = action
         self.rewards[self.current_index] = reward
         self.next_states[self.current_index] = next_state
         self.current_index += 1
+        self.current_index %= self.buffer_size
 
-    def get_values(self):
-        i = 0
-        while i < self.current_index:
-            yield self.states[i], self.actions[i], self.rewards[i], self.next_states[i]
-            i += 1
+    def get_random_batch(self, batch_size: int):
+        # rand_idx = torch.randint(self.buffer_size, (batch_size,)) without replacement
+        rand_idx = torch.randperm(self.buffer_size)[:10]
+        for i in range(batch_size):
+            yield self.states[rand_idx[i]], self.actions[rand_idx[i]], \
+                  self.rewards[rand_idx[i]], self.next_states[rand_idx[i]]
 
     def reset(self) -> None:
         self.current_index = 0

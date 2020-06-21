@@ -16,6 +16,11 @@ class Policy(ABC):
     def get_action(self, state: torch.Tensor) -> torch.Tensor:
         pass
 
+    def train(self, states: torch.Tensor,
+              actions: torch.Tensor,
+              rewards: torch.Tensor) -> None:
+        pass
+
 
 class BasicNetwork(nn.Module):
     def __init__(self, state_shape: Tuple,
@@ -55,7 +60,6 @@ class NetworkPolicy(Policy):
         self._training_iter = 0
 
     def get_action(self, state: torch.Tensor) -> torch.Tensor:
-        #  Returns stochastic distribution over actions
         action_probs = self._softmax(self._network(state))
         return action_probs.data.cpu().numpy()[0]
 
@@ -64,7 +68,7 @@ class NetworkPolicy(Policy):
               rewards: torch.Tensor):
         self._optimizer.zero_grad()
         actions_pred = self._network(states)
-        loss_v = nn.CrossEntropyLoss((actions_pred, actions))
+        loss_v = nn.CrossEntropyLoss()(actions_pred, actions)
         loss_v.backward()
         self._optimizer.step()
         if self._writer is not None:

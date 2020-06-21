@@ -1,1 +1,1 @@
-from .CrossEntropy import CrossEntropy
+from .CrossEntropyAgent import CrossEntropyAgent

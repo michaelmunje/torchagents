@@ -29,6 +29,18 @@ class ReplayBuffer:
         self._next_states[idx] = next_state
         self._current_index += 1
 
+    def get_states(self):
+        return self._states[:self._current_index]
+
+    def get_actions(self):
+        return self._actions[:self._current_index]
+
+    def get_rewards(self):
+        return self._rewards[:self._current_index]
+
+    def get_next_states(self):
+        return self._next_states[:self._current_index]
+
     def get_random_batch(self, batch_size: int) -> (torch.Tensor, torch.Tensor,
                                                     torch.Tensor, torch.Tensor):
         # rand_idx = torch.randint(self.buffer_size, (batch_size,)) without replacement

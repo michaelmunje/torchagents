@@ -10,9 +10,7 @@ install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda info -a
-  - cd envs
   - conda create --name rl
-  - cd ..
 # command to run tests
 script:
   - source activate rl
@@ -25,8 +23,8 @@ script:
   - pip install matplotlib
   - pip install opencv-python
   - python -m pytest --cov=torchagents/ -W ignore::DeprecationWarning
-  - cd docs
-  - make html
-  - cd ..
+#  - cd docs
+#  - make html
+#  - cd ..
 after_success:
   - coveralls

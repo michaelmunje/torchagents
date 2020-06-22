@@ -44,4 +44,6 @@ class TestReplayBuffer(TestCase):
         self.assertTrue(torch.eq(ns[0], next_state1).all().cpu().numpy()
                         or torch.eq(ns[0], next_state2).all().cpu().numpy())
 
+        self.assertRaises(ValueError, lambda: buffer.get_random_batch(3))
         buffer.reset()
+        self.assertRaises(ValueError, lambda: buffer.get_random_batch(2))

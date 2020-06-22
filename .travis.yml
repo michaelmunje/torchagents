@@ -15,10 +15,11 @@ install:
 script:
   - source activate rl
   - conda install -y --quiet --yes numpy pandas pytorch pytest pytest-cov
-  - conda install -y --quiet --yes pytorch-lightning pillow tensorboard
+  - conda install -y --quiet --yes pillow tensorboard
   - conda install -y --quiet --yes torchvision mypy scipy
   - conda clean -tipsy
   - pip install gym
+  - pip install pytorch-lightning
   - pip install coveralls
   - pip install sphinx
   - pip install matplotlib

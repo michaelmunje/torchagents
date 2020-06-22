@@ -20,7 +20,7 @@ class TestOffPolicyFilteringAgent(TestCase):
         if torch.cuda.is_available():
             device = torch.device("cuda:0")
 
-        avg_episode_reward = 0
+        high_percentile_avg_reward = 0
         # env = gym.wrappers.Monitor(env, directory="mon", force=True)
 
         for i in range(num_batches):
@@ -41,5 +41,7 @@ class TestOffPolicyFilteringAgent(TestCase):
 
                 ce_agent.finished_episode()
             ce_agent.train()
+            high_percentile_avg_reward = ce_agent.get_avg_reward()
+            print(high_percentile_avg_reward)
             ce_agent.reset_episodes()
-        self.assertTrue(170 < avg_episode_reward < 201)
+        self.assertTrue(170 < high_percentile_avg_reward < 201)

@@ -1,0 +1,32 @@
+language: python
+python:
+  - "3.7.6"
+# command to install dependencies
+install:
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda info -a
+  - conda create --name rl
+# command to run tests
+script:
+  - source activate rl
+  - conda install -y --quiet --yes numpy pandas pytorch pytest pytest-cov
+  - conda install -y --quiet --yes pillow tensorboard
+  - conda install -y --quiet --yes torchvision mypy scipy
+  - conda clean -tipsy
+  - pip install gym
+  - pip install pytorch-lightning
+  - pip install coveralls
+  - pip install sphinx
+  - pip install matplotlib
+  - pip install opencv-python
+  - python -m pytest --cov=torchagents/ -W ignore::DeprecationWarning
+#  - cd docs
+#  - make html
+#  - cd ..
+after_success:
+  - coveralls

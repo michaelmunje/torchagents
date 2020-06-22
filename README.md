@@ -1,7 +1,4 @@
 torchagents
-[![Build Status](https://travis-ci.org/michaelmunje/torchagents.svg?branch=master)](https://travis-ci.org/michaelmunje/torchagents)
-
-torchagents
 ======
 
 torchagents is an open-source library for using agents powered by reinforcement learning algorithms and a reinforcement learning toolbox.

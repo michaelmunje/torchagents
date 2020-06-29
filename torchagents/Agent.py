@@ -13,7 +13,17 @@ class Agent:
                  off_policy: bool = False,
                  buffer_size: int = 100,
                  epsilon: float = 0.05):
+        """
 
+        Parameters
+        ----------
+        policy
+        state_shape
+        num_actions
+        off_policy
+        buffer_size
+        epsilon
+        """
         self._policy = policy
         self._state_shape = state_shape
         self._num_actions = num_actions
@@ -24,6 +34,24 @@ class Agent:
             self._buffer = ReplayBuffer(buffer_size, state_shape)
 
     def get_action(self, state: torch.Tensor) -> torch.Tensor:
+        """
+        Gets an an action from an agent. If on-policy, we essentially just call the policy here. Otherwise, perform
+        off-policy algorithm here.
+
+        By defaylt, the action is greedy epsilon. We can override this method from
+        agents inheriting this abstract class.
+
+        Parameters
+        ----------
+        state: torch.Tensor
+            Current environment state to determine action from.
+
+        Returns
+        -------
+        torch.Tensor
+            Action for the agent.
+
+        """
         if self.off_policy:
             if torch.rand(1) < self._epsilon:
                 return torch.randint(high=self._num_actions, size=[1])

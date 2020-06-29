@@ -38,8 +38,7 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
-    'sphinx.ext.imgconverter',
-    'sphinx_rtd_theme'
+    'sphinx.ext.imgconverter'
 ]
 
 numpydoc_class_members_toctree = False

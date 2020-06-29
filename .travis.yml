@@ -22,11 +22,12 @@ script:
   - pip install pytorch-lightning
   - pip install coveralls
   - pip install sphinx
+  - pip install pytorch_sphinx_theme
   - pip install matplotlib
   - pip install opencv-python
   - python -m pytest --cov=torchagents/ -W ignore::DeprecationWarning
-#  - cd docs
-#  - make html
-#  - cd ..
+  - cd docs
+  - make html
+  - cd ..
 after_success:
   - coveralls

@@ -1,7 +1,5 @@
 import torch
-from torch.utils.tensorboard import SummaryWriter
 from typing import Tuple
-import numpy as np
 from torchagents import Policy
 from torchagents.utilities import ReplayBuffer
 
@@ -14,15 +12,17 @@ class Agent:
                  buffer_size: int = 100,
                  epsilon: float = 0.05):
         """
+        Class containing abstraction for an agent, which essentially will give us actions for a given state.
+        There also will be training involved.
 
         Parameters
         ----------
-        policy
-        state_shape
-        num_actions
-        off_policy
-        buffer_size
-        epsilon
+        policy (Policy): Policy to determine actions from a given state
+        state_shape (Tuple): Shape of the environment state.
+        num_actions (int): Number of possible actions
+        off_policy (bool): Whether the algorithm is off-policy or returns output from current policy.
+        buffer_size (int): Size of the replay buffer, only needed if replay buffer is used by the agent.
+        epsilon (float): Epsilon from epsilon greedy off-policy algorithm.
         """
         self._policy = policy
         self._state_shape = state_shape
@@ -43,13 +43,11 @@ class Agent:
 
         Parameters
         ----------
-        state: torch.Tensor
-            Current environment state to determine action from.
+        state (torch.Tensor): Current environment state to determine action from.
 
         Returns
         -------
-        torch.Tensor
-            Action for the agent.
+        (torch.Tensor) Action for the agent.
 
         """
         if self.off_policy:
@@ -58,6 +56,18 @@ class Agent:
         return torch.argmax(self.get_action_distribution(state))
 
     def get_action_distribution(self, state: torch.Tensor) -> torch.Tensor:
+        """
+        Gets the Agent's probability distribution over actions for a given state.
+
+        Parameters
+        ----------
+        state (torch.Tensor): Current environment state to determine action from.
+
+        Returns
+        -------
+        (torch.Tensor) Action distribution for the agent.
+
+        """
         return self._policy.get_action(state)
 
     def update(self):

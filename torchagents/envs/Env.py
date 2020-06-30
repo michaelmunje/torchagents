@@ -1,13 +1,17 @@
 from abc import ABC
 from abc import abstractmethod
-
+import torch
 
 class Env(ABC):
-    def __init__(self, env_name, render=False):
+    def __init__(self, env_name: str, render: bool = False, device: torch.device = None):
         self.n_steps = 0
         self.n_dones = 0
         self._render = render
         self.env_name = env_name
+        self._device = device
+        self._state = None
+        self._reward = None
+        self._done = False
 
     @abstractmethod
     def step(self, action):

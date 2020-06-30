@@ -9,4 +9,4 @@ torchagents
 Documentation
 -------------
 
-The documentation for ``torchagents`` will be available soon.
+The documentation for ``torchagents`` is available [here](https://torchagents.github.io/torchagents/build/index.html).

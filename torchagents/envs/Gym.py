@@ -1,13 +1,12 @@
 import numpy as np
 import gym
+from torchagents.envs import Env
 
-class Gym():
-    n_steps = 0
-    n_dones = 0
 
+class Gym(Env):
     def __init__(self, env_name, render=False):
+        super(Gym, self).__init__(env_name, render)
         self.env = gym.make(env_name)
-        self._render = render
         if self.is_discrete_action():
             self._action_space = tuple([self.env.action_space.n])
         else:
@@ -17,9 +16,7 @@ class Gym():
     def step(self, action):
         self.n_steps += 1
 
-        self._raw_action = action
         self._action = self._clean_actions(action)
-
         self._state, self._reward, self._done, _ = self.env.step(self._action)
 
         if self._done:
